@@ -1,0 +1,17 @@
+name: validate
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  Validate:
+    name: Validate
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run starter validation
+        shell: powershell
+        run: .\scripts\validate-template.ps1
