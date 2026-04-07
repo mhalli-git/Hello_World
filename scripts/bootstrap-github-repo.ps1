@@ -35,12 +35,8 @@ $protectionBody = @{
         required_approving_review_count = 0
     }
     restrictions = $null
-    allow_force_pushes = @{
-        enabled = $false
-    }
-    allow_deletions = @{
-        enabled = $false
-    }
+    allow_force_pushes = $false
+    allow_deletions = $false
     block_creations = $false
     required_conversation_resolution = $false
     lock_branch = $false
@@ -53,4 +49,4 @@ $json | Set-Content -LiteralPath $jsonPath -Encoding utf8
 $null = & $gh api --method PUT "repos/$Owner/$Repo/branches/$DefaultBranch/protection" --input $jsonPath
 Remove-Item -LiteralPath $jsonPath -Force
 
-& $gh repo view "$Owner/$Repo" --json nameWithOwner,isTemplate,defaultBranchRef,allowAutoMerge,visibility
+& $gh api "repos/$Owner/$Repo" --jq "{name: .full_name, default_branch: .default_branch, private: .private, is_template: .is_template, allow_auto_merge: .allow_auto_merge, delete_branch_on_merge: .delete_branch_on_merge}"
